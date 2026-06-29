@@ -5,6 +5,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     BIBLE_PDF_PATH: Path
+    DEBUG_PARSER: bool = False
 
     model_config = SettingsConfigDict(
         env_file=".env",
