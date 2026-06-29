@@ -1,5 +1,7 @@
-# base class / interface for text extraction:
-#   - PDF extractor 
-#   - WORD extractor 
-#   - MD extractor 
-#   - etc...
+from abc import ABC, abstractmethod
+
+
+class DocumentExtractor(ABC):
+    @abstractmethod
+    def extract(self, file_path: str) -> str:
+        pass
