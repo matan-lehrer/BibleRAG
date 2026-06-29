@@ -1,0 +1,1 @@
+PDF_EXTENSION = ".pdf"
