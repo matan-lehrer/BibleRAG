@@ -13,12 +13,7 @@ BOOK_HEADING = re.compile(r"^[א-ת ]+$")
 
 _SOF_PASUK = "׃"
 
-_VERSE_MARKER = re.compile(
-    r"'[א-ת]"
-    r'|[א-ת]"[א-ת]'
-    r'|"[א-ת]{2,3}'
-    r'|[א-ת]{2,3}"'
-)
+_VERSE_MARKER = re.compile(r"'[א-ת]" r'|[א-ת]"[א-ת]' r'|"[א-ת]{2,3}' r'|[א-ת]{2,3}"')
 
 
 class BibleParser:
@@ -98,6 +93,4 @@ class BibleParser:
             }
             for v in self.verses
         ]
-        self.DEBUG_PATH.write_text(
-            json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8"
-        )
+        self.DEBUG_PATH.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
