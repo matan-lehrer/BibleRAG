@@ -25,4 +25,4 @@ class BibleChunk:
 
     @property
     def text(self):
-        return "\n".join(v.clean_text for v in self.verses)
+        return "\n".join(v.text for v in self.verses)

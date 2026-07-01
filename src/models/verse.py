@@ -6,5 +6,4 @@ class Verse:
     book: str
     chapter: int
     verse: int
-    raw_text: str
-    clean_text: str
+    text: str
