@@ -1,11 +1,13 @@
 from chat.service import BibleChatService
 from consts import (
     CLI_BANNER,
+    CLI_ERROR,
     CLI_GOODBYE,
     CLI_HISTORY_CLEARED,
     EXIT_COMMANDS,
     RESET_COMMANDS,
 )
+from exception import BibleRAGError
 
 
 def run_cli(service: BibleChatService) -> None:
@@ -25,8 +27,11 @@ def run_cli(service: BibleChatService) -> None:
                 print(f"{CLI_HISTORY_CLEARED}\n")
                 continue
 
-            answer = service.ask(question)
-            print(f"\n{answer}\n")
+            try:
+                answer = service.ask(question)
+                print(f"\n{answer}\n")
+            except BibleRAGError as error:
+                print(f"\n{CLI_ERROR}\n({error})\n")
 
         except (EOFError, KeyboardInterrupt):
             print(f"\n{CLI_GOODBYE}")
