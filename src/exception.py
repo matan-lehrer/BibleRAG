@@ -38,3 +38,7 @@ class RetrievalError(BibleRAGError):
 
 class AnswerGenerationError(BibleRAGError):
     default_message = "Failed to generate an answer from the chat model."
+
+
+class AnswerValidationError(BibleRAGError):
+    default_message = "Generated answer failed validation."
