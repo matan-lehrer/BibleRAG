@@ -19,8 +19,10 @@ class PdfExtractor(DocumentExtractor):
 
         pages: list[str] = []
 
+        flags = fitz.TEXTFLAGS_TEXT | fitz.TEXT_INHIBIT_SPACES
+
         with fitz.open(path) as pdf:
             for page in pdf:
-                pages.append(page.get_text("text"))
+                pages.append(page.get_text("text", flags=flags))
 
         return "\n".join(pages).strip()
