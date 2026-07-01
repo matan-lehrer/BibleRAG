@@ -13,7 +13,7 @@ def validate_answer(answer: str) -> str:
         raise AnswerValidationError(details="Answer is empty.")
 
     if is_insufficient_context(stripped):
-        return stripped
+        return INSUFFICIENT_CONTEXT_MESSAGE
 
     if SOURCES_HEADER not in stripped:
         raise AnswerValidationError(details="Substantive answer is missing source references.")

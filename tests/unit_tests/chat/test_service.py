@@ -7,6 +7,7 @@ from chat.service import BibleChatService
 
 Message = dict[str:str]
 
+
 class _FakeRetriever:
     def __init__(self) -> None:
         self.questions: list[str] = []

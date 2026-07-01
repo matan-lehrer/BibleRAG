@@ -6,7 +6,7 @@ from langchain_chroma import Chroma
 from langchain_core.documents import Document
 from langchain_openai import OpenAIEmbeddings
 
-from exception import VectorStoreError
+from exception import ConfigurationError, VectorStoreError
 from models.bible_chunk import BibleChunk
 from settings import settings
 
@@ -60,7 +60,7 @@ def build_documents(chunks: list[BibleChunk]) -> list[Document]:
 
 def _build_embeddings() -> OpenAIEmbeddings:
     if not settings.OPENAI_API_KEY:
-        raise VectorStoreError(details="OPENAI_API_KEY is not configured.")
+        raise ConfigurationError(details="OPENAI_API_KEY is not configured.")
     return OpenAIEmbeddings(
         model=settings.OPENAI_EMBEDDING_MODEL,
         api_key=settings.OPENAI_API_KEY,

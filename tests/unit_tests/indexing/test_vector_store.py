@@ -10,14 +10,8 @@ from settings import settings
 EMBED_SIZE = 16
 
 
-def _verse(book: str, chapter: int, verse: int, clean_text: str) -> Verse:
-    return Verse(
-        book=book,
-        chapter=chapter,
-        verse=verse,
-        raw_text=f"{clean_text} (raw)",
-        clean_text=clean_text,
-    )
+def _verse(book: str, chapter: int, verse: int, text: str) -> Verse:
+    return Verse(book=book, chapter=chapter, verse=verse, text=text)
 
 
 @pytest.fixture
