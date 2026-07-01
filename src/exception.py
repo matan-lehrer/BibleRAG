@@ -34,3 +34,7 @@ class VectorStoreError(BibleRAGError):
 
 class RetrievalError(BibleRAGError):
     default_message = "Failed to retrieve context from the vector store."
+
+
+class AnswerGenerationError(BibleRAGError):
+    default_message = "Failed to generate an answer from the chat model."
