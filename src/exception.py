@@ -20,10 +20,6 @@ class UnsupportedFileTypeError(BibleRAGError):
     default_message = "Unsupported document file type."
 
 
-class BibleParsingError(BibleRAGError):
-    default_message = "Failed to parse Bible text."
-
-
 class ChunkingError(BibleRAGError):
     default_message = "Failed to build Bible chunks."
 

@@ -31,7 +31,6 @@ def test_clear_empties_history():
     history = _history(max_turns=5)
     history.add_turn("q", "a")
     history.clear()
-    assert len(history) == 0
     assert history.recent_turns() == []
 
 
@@ -39,4 +38,4 @@ def test_recent_turns_returns_a_copy():
     history = _history(max_turns=5)
     history.add_turn("q", "a")
     history.recent_turns().clear()
-    assert len(history) == 1
+    assert len(history.recent_turns()) == 1

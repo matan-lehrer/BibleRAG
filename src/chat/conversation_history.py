@@ -24,6 +24,3 @@ class ConversationHistory:
 
     def clear(self) -> None:
         self._turns.clear()
-
-    def __len__(self) -> int:
-        return len(self._turns)
