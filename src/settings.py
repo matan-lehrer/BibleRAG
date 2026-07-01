@@ -19,6 +19,10 @@ class Settings(BaseSettings):
     CHROMA_COLLECTION_NAME: str
     VECTOR_STORE_BATCH_SIZE: int
 
+    OPENAI_CHAT_MODEL: str
+    RETRIEVER_TOP_K: int
+    CONVERSATION_MAX_TURNS: int
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",

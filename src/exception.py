@@ -30,3 +30,7 @@ class ChunkingError(BibleRAGError):
 
 class VectorStoreError(BibleRAGError):
     default_message = "Vector store operation failed."
+
+
+class RetrievalError(BibleRAGError):
+    default_message = "Failed to retrieve context from the vector store."
