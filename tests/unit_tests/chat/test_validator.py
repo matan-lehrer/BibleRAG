@@ -15,6 +15,13 @@ def test_insufficient_context_reply_is_exempt_from_sources():
     assert is_insufficient_context(INSUFFICIENT_CONTEXT_MESSAGE)
 
 
+def test_insufficient_context_with_sources_is_normalized():
+    answer = (
+        f"{INSUFFICIENT_CONTEXT_MESSAGE}\n\n" f"{SOURCES_HEADER}\n- בראשית 44:9-14\n- איוב 34:13-18"
+    )
+    assert validate_answer(answer) == INSUFFICIENT_CONTEXT_MESSAGE
+
+
 def test_empty_answer_rejected():
     with pytest.raises(AnswerValidationError):
         validate_answer("   ")

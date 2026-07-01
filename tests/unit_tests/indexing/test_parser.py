@@ -3,6 +3,7 @@ from collections import defaultdict
 import pytest
 
 from indexing.extractors.pdf_extractor import PdfExtractor
+from indexing.hebrew_cleaner import clean
 from indexing.parser import BibleParser
 from settings import settings
 
@@ -11,7 +12,7 @@ from settings import settings
 def verses():
     pdf_path = str(settings.BIBLE_PDF_PATH)
     raw_text = PdfExtractor().extract(pdf_path)
-    return BibleParser(raw_text).parse()
+    return BibleParser(clean(raw_text)).parse()
 
 
 def _count(verses, book, chapter):
@@ -19,8 +20,7 @@ def _count(verses, book, chapter):
 
 
 def test_total_in_expected_band(verses):
-    # currently at 22,395; suppose to be 23,206
-    assert 22_350 <= len(verses) <= 23,250
+    assert 22350 <= len(verses) <= 23250
 
 
 def test_book_count(verses):
@@ -50,8 +50,19 @@ def test_verses_numbered_sequentially_per_chapter(verses):
         assert nums == list(range(1, len(nums) + 1)), f"{key} not sequential: {nums}"
 
 
-def test_no_empty_or_marker_polluted_clean_text(verses):
+def test_no_empty_or_marker_polluted_text(verses):
     for v in verses:
-        assert v.clean_text.strip(), f"empty clean_text at {v.book} {v.chapter}:{v.verse}"
-        assert "׃" not in v.clean_text 
-        assert '"' not in v.clean_text and "'" not in v.clean_text  
+        assert v.text.strip(), f"empty text at {v.book} {v.chapter}:{v.verse}"
+        assert "׃" not in v.text
+        assert '"' not in v.text and "'" not in v.text
+
+
+def test_words_are_whole_not_fragmented(verses):
+    by_ref = {(v.book, v.chapter, v.verse): v.text for v in verses}
+    gen_1_1 = by_ref[("בראשית", 1, 1)]
+    assert "אלהים" in gen_1_1.split()
+    assert "השמים" in gen_1_1.split()
+
+    all_words = {word for v in verses for word in v.text.split()}
+    for term in ("משה", "אברהם", "ישראל", "סיני"):
+        assert term in all_words, f"{term} not found as a whole word"
