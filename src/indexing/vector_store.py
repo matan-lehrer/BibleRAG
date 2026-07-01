@@ -1,4 +1,5 @@
 import json
+import logging
 from collections.abc import Iterator, Sequence
 from typing import TypeVar
 
@@ -11,6 +12,8 @@ from models.bible_chunk import BibleChunk
 from settings import settings
 
 T = TypeVar("T")
+
+logger = logging.getLogger(__name__)
 
 
 def batched(items: Sequence[T], batch_size: int) -> Iterator[list[T]]:
@@ -49,6 +52,7 @@ def _save_documents_debug_output(documents: list[Document]) -> None:
     settings.DOCUMENTS_DEBUG_PATH.write_text(
         json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8"
     )
+    logger.debug("Wrote %d debug documents to %s", len(documents), settings.DOCUMENTS_DEBUG_PATH)
 
 
 def build_documents(chunks: list[BibleChunk]) -> list[Document]:
@@ -72,6 +76,9 @@ def build_vector_store(chunks: list[BibleChunk], *, reset: bool = False) -> None
     if not indexable:
         raise VectorStoreError(details="No non-empty chunks to index.")
 
+    batch_size = settings.VECTOR_STORE_BATCH_SIZE
+    logger.info("Embedding and indexing %d chunks (batch_size=%d)", len(indexable), batch_size)
+
     documents = build_documents(indexable)
     ids = [_chunk_id(chunk) for chunk in indexable]
 
@@ -84,7 +91,6 @@ def build_vector_store(chunks: list[BibleChunk], *, reset: bool = False) -> None
     if reset:
         store.reset_collection()
 
-    batch_size = settings.VECTOR_STORE_BATCH_SIZE
     for doc_batch, id_batch in zip(
         batched(documents, batch_size), batched(ids, batch_size), strict=True
     ):

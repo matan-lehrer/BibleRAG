@@ -1,3 +1,5 @@
+import logging
+
 from chat.service import BibleChatService
 from consts import (
     CLI_BANNER,
@@ -8,6 +10,8 @@ from consts import (
     RESET_COMMANDS,
 )
 from exception import BibleRAGError
+
+logger = logging.getLogger(__name__)
 
 
 def run_cli(service: BibleChatService) -> None:
@@ -31,6 +35,7 @@ def run_cli(service: BibleChatService) -> None:
                 answer = service.ask(question)
                 print(f"\n{answer}\n")
             except BibleRAGError as error:
+                logger.error("Failed to answer question: %s", error)
                 print(f"\n{CLI_ERROR}\n({error})\n")
 
         except (EOFError, KeyboardInterrupt):

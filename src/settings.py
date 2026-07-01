@@ -5,11 +5,9 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     BIBLE_PDF_PATH: Path
-    CHUNKS_DEBUG_PATH: Path
     DOCUMENTS_DEBUG_PATH: Path
     CHROMA_PERSIST_DIR: Path
 
-    DEBUG_PARSER: bool
     DEBUG_VECTOR_STORE: bool
     CHUNK_WINDOW_SIZE: int
     CHUNK_OVERLAP: int
@@ -22,6 +20,9 @@ class Settings(BaseSettings):
     OPENAI_CHAT_MODEL: str
     RETRIEVER_TOP_K: int
     CONVERSATION_MAX_TURNS: int
+
+    LOG_LEVEL: str = "INFO"
+    LOG_FILE_PATH: Path | None = None
 
     model_config = SettingsConfigDict(
         env_file=".env",

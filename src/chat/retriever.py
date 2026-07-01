@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 from dataclasses import dataclass
 
 from langchain_chroma import Chroma
@@ -8,6 +9,8 @@ from langchain_openai import OpenAIEmbeddings
 
 from exception import ConfigurationError, RetrievalError
 from settings import settings
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass(frozen=True)
@@ -58,5 +61,14 @@ class BibleRetriever:
         try:
             documents = self._store.similarity_search(question, k=k)
         except Exception as error:
+            logger.exception("Similarity search failed")
             raise RetrievalError(details=str(error)) from error
-        return [RetrievedChunk.from_document(document) for document in documents]
+
+        if not documents:
+            logger.warning("No chunks retrieved")
+        elif len(documents) < k:
+            logger.warning("Weak retrieval: %d of %d chunks", len(documents), k)
+
+        chunks = [RetrievedChunk.from_document(document) for document in documents]
+        logger.debug("Retrieved references: %s", [chunk.reference for chunk in chunks])
+        return chunks

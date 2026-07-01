@@ -1,9 +1,13 @@
+import logging
+
 from openai import OpenAI, OpenAIError
 
 from exception import AnswerGenerationError, ConfigurationError
 from settings import settings
 
 Message = dict[str, str]
+
+logger = logging.getLogger(__name__)
 
 
 class AnswerGenerator:
@@ -24,9 +28,11 @@ class AnswerGenerator:
                 temperature=0,
             )
         except OpenAIError as error:
+            logger.error("Chat completion failed: %s", error)
             raise AnswerGenerationError(details=str(error)) from error
 
         content = response.choices[0].message.content
         if not content or not content.strip():
+            logger.error("Chat model returned an empty response")
             raise AnswerGenerationError(details="Chat model returned an empty response.")
         return content.strip()

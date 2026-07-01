@@ -1,3 +1,5 @@
+import logging
+
 from openai import OpenAI, OpenAIError
 
 from chat.conversation_history import ConversationTurn
@@ -7,6 +9,8 @@ from exception import ConfigurationError
 from settings import settings
 
 Message = dict[str, str]
+
+logger = logging.getLogger(__name__)
 
 
 class QuestionRefiner:
@@ -36,9 +40,12 @@ class QuestionRefiner:
                 temperature=0,
             )
         except OpenAIError:
+            logger.warning("Query refinement failed, using original question")
             return question
 
         refined = response.choices[0].message.content
         if not refined or not refined.strip():
             return question
-        return refined.strip()
+        refined = refined.strip()
+        logger.debug("Query refinement changed query: %s", refined != question.strip())
+        return refined
