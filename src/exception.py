@@ -8,6 +8,10 @@ class BibleRAGError(Exception):
         super().__init__(message)
 
 
+class ConfigurationError(BibleRAGError):
+    default_message = "Application configuration is invalid."
+
+
 class DocumentExtractionError(BibleRAGError):
     default_message = "Failed to extract text from document."
 
