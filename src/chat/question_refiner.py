@@ -37,7 +37,6 @@ class QuestionRefiner:
             response = self._client.chat.completions.create(
                 model=self._model,
                 messages=messages,
-                temperature=0,
             )
         except OpenAIError:
             logger.warning("Query refinement failed, using original question")

@@ -25,7 +25,6 @@ class AnswerGenerator:
             response = self._client.chat.completions.create(
                 model=self._model,
                 messages=messages,
-                temperature=0,
             )
         except OpenAIError as error:
             logger.error("Chat completion failed: %s", error)
