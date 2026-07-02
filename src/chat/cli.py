@@ -36,7 +36,7 @@ def run_cli(service: BibleChatService) -> None:
                 print(f"\n{answer}\n")
             except BibleRAGError as error:
                 logger.error("Failed to answer question: %s", error)
-                print(f"\n{CLI_ERROR}\n({error})\n")
+                print(f"\n{CLI_ERROR}\n")
 
         except (EOFError, KeyboardInterrupt):
             print(f"\n{CLI_GOODBYE}")

@@ -21,7 +21,7 @@ class Settings(BaseSettings):
     RETRIEVER_TOP_K: int
     CONVERSATION_MAX_TURNS: int
 
-    LOG_LEVEL: str = "INFO"
+    LOG_LEVEL: str = "WARNING"
     LOG_FILE_PATH: Path | None = None
 
     model_config = SettingsConfigDict(
