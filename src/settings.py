@@ -21,6 +21,8 @@ class Settings(BaseSettings):
     RETRIEVER_TOP_K: int
     CONVERSATION_MAX_TURNS: int
 
+    CENSOR_GODS_NAMES: bool = True
+
     LOG_LEVEL: str = "WARNING"
     LOG_FILE_PATH: Path | None = None
 

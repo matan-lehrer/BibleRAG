@@ -6,8 +6,16 @@ from chat.prompt_builder import build_messages
 from chat.question_refiner import QuestionRefiner
 from chat.retriever import BibleRetriever
 from chat.validator import validate_answer
+from consts import GOD_NAME_SUBSTITUTIONS
+from settings import settings
 
 logger = logging.getLogger(__name__)
+
+
+def _CENSOR_GODS_NAMES(text: str) -> str:
+    for name, replacement in GOD_NAME_SUBSTITUTIONS.items():
+        text = text.replace(name, replacement)
+    return text
 
 
 class BibleChatService:
@@ -35,7 +43,7 @@ class BibleChatService:
         answer = validate_answer(answer)
         self._history.add_turn(question, answer)
         logger.info("Answer ready (chars=%d, context_chunks=%d)", len(answer), len(chunks))
-        return answer
+        return _CENSOR_GODS_NAMES(answer) if settings.CENSOR_GODS_NAMES else answer
 
     def reset(self) -> None:
         self._history.clear()
